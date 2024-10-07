@@ -346,7 +346,7 @@ class Stream:
                     else:
                         params.append(min(int(current or 0), 9999))
 
-                        if char == ";":
+                        if char == ";" or char == ":":
                             current = ""
                         else:
                             if private:
