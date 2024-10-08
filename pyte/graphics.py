@@ -108,6 +108,9 @@ FG_256 = 38
 #: SGR code for background in 256 or True color mode.
 BG_256 = 48
 
+#: SGR code for underline in 256 or True color mode.
+UNDERLINE_256 = 58
+
 #: A table of 256 foreground or background colors.
 # The following code is part of the Pygments project (BSD licensed).
 _FG_BG_256 = [

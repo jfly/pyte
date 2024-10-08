@@ -346,9 +346,10 @@ class Stream:
                     else:
                         params.append(min(int(current or 0), 9999))
 
-                        if char == ";" or char == ":":
+                        if char == ";":
                             current = ""
                         else:
+                            breakpoint()#<<<
                             if private:
                                 csi_dispatch[char](*params, private=True)
                             else:

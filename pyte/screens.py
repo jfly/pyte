@@ -79,6 +79,7 @@ class Char(NamedTuple):
                          Defaults to ``False``.
     :param bool underscore: flag for rendering the character underlined.
                             Defaults to ``False``.
+    :param bool underscore_color: underscore colour. Defaults to ``"default"``.
     :param bool strikethrough: flag for rendering the character with a
                                strike-through line. Defaults to ``False``.
     :param bool reverse: flag for swapping foreground and background colours
@@ -92,6 +93,7 @@ class Char(NamedTuple):
     bold: bool = False
     italics: bool = False
     underscore: bool = False
+    underscore_color: str = "default"
     strikethrough: bool = False
     reverse: bool = False
     blink: bool = False
@@ -972,6 +974,7 @@ class Screen:
 
         :param list attrs: a list of display attributes to set.
         """
+        breakpoint()#<<<
         replace = {}
 
         # Fast path for resetting all attributes.
@@ -997,8 +1000,12 @@ class Screen:
                 replace.update(fg=g.FG_AIXTERM[attr])
             elif attr in g.BG_AIXTERM:
                 replace.update(bg=g.BG_AIXTERM[attr])
-            elif attr in (g.FG_256, g.BG_256):
-                key = "fg" if attr == g.FG_256 else "bg"
+            elif attr in (g.FG_256, g.BG_256, g.UNDERLINE_256):
+                key = {
+                    g.FG_256: "fg",
+                    g.BG_256: "bg",
+                    g.UNDERLINE_256: "underscore_color",
+                }[attr]
                 try:
                     n = attrs_list.pop()
                     if n == 5:    # 256.
@@ -1012,6 +1019,8 @@ class Screen:
                             attrs_list.pop(), attrs_list.pop(), attrs_list.pop())
                 except IndexError:
                     pass
+            else:
+                breakpoint() # <<<
 
         self.cursor.attrs = self.cursor.attrs._replace(**replace)
 

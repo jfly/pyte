@@ -70,6 +70,24 @@ def test_unknown_sequences():
     assert handler.args == (6, 0)
     assert handler.kwargs == {}
 
+def test_unrecognized_sgr_code_with_parameters():
+    # <<< handler = argcheck()
+    screen = pyte.Screen(80, 24)
+    # <<< screen.debug = handler
+
+    stream = pyte.Stream(screen)
+    codes = [
+        "38:5:3",
+        # <<< "38;5;3",
+        # <<< "58:5:3",  # This is a (currently) unsupported SGR code for setting underline color, it includes some : separated parameters.
+        # <<< "4",  # Enable underline. This is supported.
+    ]
+    stream.feed(ctrl.CSI + ";".join(codes) + "m")
+    breakpoint()#<<<
+    # <<< assert handler.count == 1
+    # <<< assert handler.args == (6, 0)
+    # <<< assert handler.kwargs == {}
+
 
 def test_non_csi_sequences():
     for cmd, event in pyte.Stream.csi.items():
